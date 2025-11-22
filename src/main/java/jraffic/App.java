@@ -1,5 +1,6 @@
 package jraffic;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,29 +24,36 @@ public class App extends Application {
             String key = e.getCode().toString();
             switch (key) {
                 case "UP":
-                    Cars car = new Cars(new Points(widthScene / 2, heightScene - 50));
-                    car.appendCar(car);
+                    Cars car = new Cars(new Points(widthScene / 2, heightScene - 50),Directions.UP);
+                    car.appendCar(car,pane);
                     car.draw(pane);
                     break;
                 case "DOWN":
-                    car = new Cars(new Points((widthScene / 2) - 50, 0));
-                    car.appendCar(car);
+                    car = new Cars(new Points((widthScene / 2) - 50, 0),Directions.DOWN);
+                    car.appendCar(car,pane);
                     car.draw(pane);
                     break;
                 case "LEFT":
-                    car = new Cars(new Points(widthScene - 50, (heightScene / 2) - 50));
-                    car.appendCar(car);
+                    car = new Cars(new Points(widthScene - 50, (heightScene / 2) - 50),Directions.LEFT);
+                    car.appendCar(car,pane);
                     car.draw(pane);
                     break;
                 case "RIGHT":
-                    car = new Cars(new Points(0, (heightScene / 2)));
-                    car.appendCar(car);
+                    car = new Cars(new Points(0, (heightScene / 2)),Directions.RIGHT);
+                    car.appendCar(car,pane);
                     car.draw(pane);
                     break;
                 default:
                     break;
             }
         });
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                Cars.updateCar();
+            }
+        };
+        timer.start();
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
