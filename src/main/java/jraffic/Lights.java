@@ -24,5 +24,4 @@ public class Lights implements Drawable {
             pane.getChildren().add(rec);
         }
     }
-
 }
