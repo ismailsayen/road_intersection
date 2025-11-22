@@ -2,30 +2,27 @@ package jraffic;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Cars implements Drawable {
+public class Lights implements Drawable {
     public Points p;
-    public static List<Cars> cars = new ArrayList<>();
+    public static List<Lights> lights = new ArrayList<>();
 
-    public Cars(Points p) {
+    public Lights(Points p) {
         this.p = p;
-    }
-
-    public void appendCar(Cars p) {
-        cars.add(this);
+        lights.add(this);
     }
 
     @Override
     public void draw(Pane pane) {
-        for (Cars car : cars) {
+         for (Lights light : lights) {
             Rectangle rec = new Rectangle(50, 50, Color.RED);
-            rec.setTranslateX(car.p.getX());
-            rec.setTranslateY(car.p.getY());
+            rec.setTranslateX(light.p.getX());
+            rec.setTranslateY(light.p.getY());
             pane.getChildren().add(rec);
         }
     }
+
 }

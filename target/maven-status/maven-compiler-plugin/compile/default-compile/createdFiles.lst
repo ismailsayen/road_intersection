@@ -1,6 +1,3 @@
-jraffic/Roads.class
-jraffic/Cars.class
-jraffic/Drawable.class
-jraffic/App.class
-jraffic/Points.class
 module-info.class
+jraffic/Drawable.class
+jraffic/Points.class

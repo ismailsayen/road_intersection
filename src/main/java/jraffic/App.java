@@ -3,7 +3,6 @@ package jraffic;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -18,30 +17,31 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-
-        scene = new Scene(createContent(widthScene, heightScene), widthScene, heightScene, Color.BLACK);
+        Pane pane = new Pane();
+        scene = new Scene(createContent(pane, widthScene, heightScene), widthScene, heightScene, Color.BLACK);
         scene.setOnKeyPressed(e -> {
             String key = e.getCode().toString();
             switch (key) {
                 case "UP":
-                    Points p = new Points(widthScene / 2, heightScene - 50);
-                    System.out.println(p.getX());
-                    System.out.println(p.getY());
+                    Cars car = new Cars(new Points(widthScene / 2, heightScene - 50));
+                    car.appendCar(car);
+                    car.draw(pane);
                     break;
                 case "DOWN":
-                    p = new Points((widthScene / 2) - 50, 0);
-                    System.out.println(p.getX());
-                    System.out.println(p.getY());
+                    car = new Cars(new Points((widthScene / 2) - 50, 0));
+                    car.appendCar(car);
+                    car.draw(pane);
                     break;
                 case "LEFT":
-                    p = new Points((widthScene / 2) - 50, 0);
-                    System.out.println(p.getX());
-                    System.out.println(p.getY());
+                    car = new Cars(new Points(widthScene - 50, (heightScene / 2) - 50));
+                    car.appendCar(car);
+                    car.draw(pane);
                     break;
-
                 case "RIGHT":
+                    car = new Cars(new Points(0, (heightScene / 2)));
+                    car.appendCar(car);
+                    car.draw(pane);
                     break;
-
                 default:
                     break;
             }
@@ -51,11 +51,16 @@ public class App extends Application {
         stage.show();
     }
 
-    public Parent createContent(int widthScene, int heightScene) {
-        Pane pane = new Pane();
+    public Parent createContent(Pane pane, int widthScene, int heightScene) {
+
         Roads roads = new Roads();
         roads.generateRoads(widthScene, heightScene);
         roads.draw(pane);
+        Lights l = new Lights(new Points((widthScene / 2) + 55, (heightScene / 2) + 55));
+        l = new Lights(new Points((widthScene / 2) - 105, (heightScene / 2) + 55));
+        l = new Lights(new Points((widthScene / 2) - 105, (heightScene / 2) - 105));
+        l = new Lights(new Points((widthScene / 2) + 55, (heightScene / 2) - 105));
+        l.draw(pane);
         return pane;
     }
 
