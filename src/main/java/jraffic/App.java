@@ -1,44 +1,75 @@
 package jraffic;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
-/**
- * JavaFX App
- */
 public class App extends Application {
 
     private static Scene scene;
-    final int windowScen = 650;
-    final int heightScen = 650;
+    private final int windowWidth = 800;
+    private final int windowHeight = 800;
+    private Pane root;
+    private IntersectionController controller;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
+        root = new Pane();
+        root.setStyle("-fx-background-color: #2d5016;"); // Grass green background
         
-        scene = new Scene(createContent(), windowScen, heightScen, Color.BLACK);
+        // Create the intersection controller
+        controller = new IntersectionController(windowWidth, windowHeight);
+        controller.initialize(root);
+        
+        // Create scene
+        scene = new Scene(root, windowWidth, windowHeight);
+        
+        // Setup keyboard controls
+        setupKeyboardControls(scene);
+        
+        stage.setTitle("Traffic Intersection Simulation");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
+        
+        // Start the simulation
+        controller.start();
     }
 
-    public Parent createContent() {
-        Line l1=new Line(42, 50, 60, 78);
-        l1.setStroke(Color.WHITE);
-        l1.setTranslateX(heightScen/2);
-        Pane pane=new Pane();
-        pane.getChildren().add(l1);
-        return  pane;
+    private void setupKeyboardControls(Scene scene) {
+        scene.setOnKeyPressed(event -> {
+            KeyCode code = event.getCode();
+            
+            switch (code) {
+                case UP:
+                    controller.spawnVehicle(Direction.SOUTH); // Coming from south, going north
+                    break;
+                case DOWN:
+                    controller.spawnVehicle(Direction.NORTH); // Coming from north, going south
+                    break;
+                case RIGHT:
+                    controller.spawnVehicle(Direction.WEST); // Coming from west, going east
+                    break;
+                case LEFT:
+                    controller.spawnVehicle(Direction.EAST); // Coming from east, going west
+                    break;
+                case R:
+                    controller.spawnVehicleRandom();
+                    break;
+                case ESCAPE:
+                    controller.stop();
+                    System.exit(0);
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
-
 }
