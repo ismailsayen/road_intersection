@@ -1,72 +1,62 @@
 package jraffic;
 
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class App extends Application {
 
     private static Scene scene;
-    private final int windowWidth = 800;
-    private final int windowHeight = 800;
-    private Pane root;
-    private IntersectionController controller;
+    public final static int widthScene = 650;
+    public final static int heightScene = 650;
 
     @Override
-    public void start(Stage stage) {
-        root = new Pane();
-        root.setStyle("-fx-background-color: #2d5016;"); // Grass green background
-        
-        // Create the intersection controller
-        controller = new IntersectionController(windowWidth, windowHeight);
-        controller.initialize(root);
-        
-        // Create scene
-        scene = new Scene(root, windowWidth, windowHeight);
-        
-        // Setup keyboard controls
-        setupKeyboardControls(scene);
-        
-        stage.setTitle("Traffic Intersection Simulation");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-        
-        // Start the simulation
-        controller.start();
-    }
+    public void start(Stage stage) throws IOException {
 
-    private void setupKeyboardControls(Scene scene) {
-        scene.setOnKeyPressed(event -> {
-            KeyCode code = event.getCode();
-            
-            switch (code) {
-                case UP:
-                    controller.spawnVehicle(Direction.SOUTH); // Coming from south, going north
+        scene = new Scene(createContent(widthScene, heightScene), widthScene, heightScene, Color.BLACK);
+        scene.setOnKeyPressed(e -> {
+            String key = e.getCode().toString();
+            switch (key) {
+                case "UP":
+                    Points p = new Points(widthScene / 2, heightScene - 50);
+                    System.out.println(p.getX());
+                    System.out.println(p.getY());
                     break;
-                case DOWN:
-                    controller.spawnVehicle(Direction.NORTH); // Coming from north, going south
+                case "DOWN":
+                    p = new Points((widthScene / 2) - 50, 0);
+                    System.out.println(p.getX());
+                    System.out.println(p.getY());
                     break;
-                case RIGHT:
-                    controller.spawnVehicle(Direction.WEST); // Coming from west, going east
+                case "LEFT":
+                    p = new Points((widthScene / 2) - 50, 0);
+                    System.out.println(p.getX());
+                    System.out.println(p.getY());
                     break;
-                case LEFT:
-                    controller.spawnVehicle(Direction.EAST); // Coming from east, going west
+
+                case "RIGHT":
                     break;
-                case R:
-                    controller.spawnVehicleRandom();
-                    break;
-                case ESCAPE:
-                    controller.stop();
-                    System.exit(0);
-                    break;
+
                 default:
                     break;
             }
         });
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    public Parent createContent(int widthScene, int heightScene) {
+        Pane pane = new Pane();
+        Roads roads = new Roads();
+        roads.generateRoads(widthScene, heightScene);
+        roads.draw(pane);
+        return pane;
     }
 
     public static void main(String[] args) {

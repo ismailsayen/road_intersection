@@ -1,9 +1,6 @@
-/home/bdaanoun/Desktop/road_intersection/src/main/java/module-info.java
-/home/bdaanoun/Desktop/road_intersection/src/main/java/jraffic/Direction.java
-/home/bdaanoun/Desktop/road_intersection/src/main/java/jraffic/App.java
-/home/bdaanoun/Desktop/road_intersection/src/main/java/jraffic/Drawable.java
-/home/bdaanoun/Desktop/road_intersection/src/main/java/jraffic/Roads.java
-/home/bdaanoun/Desktop/road_intersection/src/main/java/jraffic/Route.java
-/home/bdaanoun/Desktop/road_intersection/src/main/java/jraffic/TrafficLight.java
-/home/bdaanoun/Desktop/road_intersection/src/main/java/jraffic/Vehicle.java
-/home/bdaanoun/Desktop/road_intersection/src/main/java/jraffic/IntersectionController.java
+/home/isayen/Desktop/jraffic/src/main/java/jraffic/Points.java
+/home/isayen/Desktop/jraffic/src/main/java/module-info.java
+/home/isayen/Desktop/jraffic/src/main/java/jraffic/App.java
+/home/isayen/Desktop/jraffic/src/main/java/jraffic/Cars.java
+/home/isayen/Desktop/jraffic/src/main/java/jraffic/Drawable.java
+/home/isayen/Desktop/jraffic/src/main/java/jraffic/Roads.java
