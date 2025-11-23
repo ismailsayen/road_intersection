@@ -51,8 +51,51 @@ public class Cars implements Drawable {
         return true;
     }
 
+    private static boolean shouldStopAtLight(Cars car) {
+        int stopDistance = 10;
+
+        for (Lights light : Lights.lights) {
+            if (light.state == false) {
+                switch (car.from) {
+                    case UP:
+                        if (car.p.getY() > light.p.getY() &&
+                                car.p.getY() - light.p.getY() < stopDistance &&
+                                Math.abs(car.p.getX() - light.p.getX()) < 60) {
+                            return true;
+                        }
+                        break;
+                    case DOWN:
+                        if (car.p.getY() < light.p.getY() &&
+                                light.p.getY() - car.p.getY() < stopDistance &&
+                                Math.abs(car.p.getX() - light.p.getX()) < 60) {
+                            return true;
+                        }
+                        break;
+                    case LEFT:
+                        if (car.p.getX() > light.p.getX() &&
+                                car.p.getX() - light.p.getX() < stopDistance &&
+                                Math.abs(car.p.getY() - light.p.getY()) < 60) {
+                            return true;
+                        }
+                        break;
+                    case RIGHT:
+                        if (car.p.getX() < light.p.getX() &&
+                                light.p.getX() - car.p.getX() < stopDistance &&
+                                Math.abs(car.p.getY() - light.p.getY()) < 60) {
+                            return true;
+                        }
+                        break;
+                }
+            }
+        }
+        return false;
+    }
+
     public static void updateCar() {
         for (Cars car : cars) {
+            if (shouldStopAtLight(car)) {
+                continue;
+            }
 
             switch (car.from) {
                 case UP:
