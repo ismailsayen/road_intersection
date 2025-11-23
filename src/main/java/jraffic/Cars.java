@@ -33,13 +33,16 @@ public class Cars implements Drawable {
 
     public static boolean isSafePosition(Points point, Directions direction) {
         for (Cars car : cars) {
-            if (direction == Directions.UP && point.getY() < car.p.getY() + 70) {
+            if (direction == Directions.UP && car.from == Directions.UP && point.getY() < car.p.getY() + 70) {
                 return false;
-            } else if (direction == Directions.DOWN && point.getY() + 70 > car.p.getY()) {
+            } else if (direction == Directions.DOWN && car.from == Directions.DOWN
+                    && point.getY() + 70 > car.p.getY()) {
                 return false;
-            } else if (direction == Directions.RIGHT && point.getX() + 70 > car.p.getX()) {
+            } else if (direction == Directions.RIGHT && car.from == Directions.RIGHT
+                    && point.getX() + 70 > car.p.getX()) {
                 return false;
-            } else if (direction == Directions.LEFT && point.getX() < car.p.getX() + 70) {
+            } else if (direction == Directions.LEFT && car.from == Directions.LEFT
+                    && point.getX() < car.p.getX() + 70) {
                 return false;
             }
         }
