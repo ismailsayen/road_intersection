@@ -1,76 +1,36 @@
 package jraffic;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.scene.layout.Pane;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 
-public class Roads implements Drawable {
-    private List<Line> lines;
-
-    public Roads() {
-        this.lines = new ArrayList<>();
+public class Roads {
+    private static final int WIDTH = 900;
+    private static final int HEIGHT = 700;
+    
+    public static void drawRoads(GraphicsContext gc) {
+        int[] pos = getRoadPositions();
+        int x = pos[0];
+        int y = pos[1];
+        int width = pos[2];
+        int height = pos[3];
+        
+        gc.setStroke(Color.WHITE);
+        gc.setLineWidth(2);
+        
+        // Vertical lines
+        gc.strokeLine(x, 0, x, height);
+        gc.strokeLine(x + 50, 0, x + 50, height);
+        gc.strokeLine(x - 50, 0, x - 50, height);
+        
+        // Horizontal lines
+        gc.strokeLine(0, y, width, y);
+        gc.strokeLine(0, y + 50, width, y + 50);
+        gc.strokeLine(0, y - 50, width, y - 50);
     }
-
-    public void generateRoads(int widthScene, int heightScene) {
-        // line1
-        Points p1 = new Points((widthScene / 2) - 50, 0);
-        Points p2 = new Points((widthScene / 2) - 50, heightScene);
-        Line line = new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-        line.setStroke(Color.WHITE);
-        lines.add(line);
-
-        // line2
-        p1.setX((widthScene / 2) + 50);
-        p2.setX((widthScene / 2) + 50);
-        line = new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-        line.setStroke(Color.WHITE);
-        lines.add(line);
-
-        // line3
-        p1.setX(0);
-        p1.setY((heightScene / 2) - 50);
-        p2.setX(widthScene);
-        p2.setY((heightScene / 2) - 50);
-        line = new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-        line.setStroke(Color.WHITE);
-        lines.add(line);
-        // line4
-        p1.setX(0);
-        p1.setY((heightScene / 2) + 50);
-        p2.setX(widthScene);
-        p2.setY((heightScene / 2) + 50);
-        line = new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-        line.setStroke(Color.WHITE);
-        lines.add(line);
-
-        // midlleHorizontal
-        p1.setX(0);
-        p1.setY(heightScene / 2);
-        p2.setX(widthScene);
-        p2.setY(heightScene / 2);
-        line = new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-        line.setStroke(Color.WHITE);
-        lines.add(line);
-
-        // midlleVertical
-        p1.setY(0);
-        p1.setX(650 / 2);
-        p2.setY(650);
-        p2.setX(650 / 2);
-        line = new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-        line.setStroke(Color.WHITE);
-        lines.add(line);
-
+    
+    public static int[] getRoadPositions() {
+        int x = WIDTH / 2;
+        int y = HEIGHT / 2;
+        return new int[]{x, y, WIDTH, HEIGHT};
     }
-
-    @Override
-    public  void draw(Pane pane) {
-        for (Line l : this.lines) {
-            pane.getChildren().add(l);
-        }
-    }
-
 }
