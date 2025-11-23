@@ -16,7 +16,7 @@ public class Lights implements Drawable {
 
     public Lights(Points p, Pane pane) {
         this.p = p;
-        this.state = p.getX()==(App.widthScene / 2) - 105+1;
+        this.state = false;
         this.color = Color.RED;
         this.box = new Rectangle(50, 50);
         pane.getChildren().add(box);
@@ -28,6 +28,16 @@ public class Lights implements Drawable {
         this.box.setTranslateX(this.p.getX());
         this.box.setTranslateY(this.p.getY());
         this.box.setStroke(this.color);
+    }
+
+    public static void changeLight(int ind) {
+        for (int i = 0; i < lights.size(); i++) {
+            if (i == ind) {
+                lights.get(ind).state = true;
+                continue;
+            }
+            lights.get(i).state = false;
+        }
     }
 
     public static void updateLights() {

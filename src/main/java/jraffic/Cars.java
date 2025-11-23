@@ -58,12 +58,47 @@ public class Cars implements Drawable {
     }
 
     public static void updateCar() {
+        List<Cars> toRightCars = new ArrayList<>();
+        List<Cars> toLeftCars = new ArrayList<>();
+        List<Cars> toUpCars = new ArrayList<>();
+        List<Cars> toDownCars = new ArrayList<>();
         for (Cars car : cars) {
-
+            
             if (!isSafePosition(car.p, car.from, car.id, car.isPassed)) {
                 continue;
             }
-            
+
+            if (!car.isPassed) {
+                switch (car.from) {
+                    case UP:
+                        toUpCars.add(car);
+                        break;
+                    case DOWN:
+                        toDownCars.add(car);
+                        break;
+                    case LEFT:
+                        toLeftCars.add(car);
+                        break;
+                    case RIGHT:
+                        toRightCars.add(car);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            int maxLen = Math.max(toDownCars.size(),
+                    Math.max(toLeftCars.size(), Math.max(toRightCars.size(), toUpCars.size())));
+            if (maxLen == toDownCars.size()) {
+                Lights.changeLight(2);
+
+            } else if (maxLen == toUpCars.size()) {
+                Lights.changeLight(0);
+            } else if (maxLen == toRightCars.size()) {
+                Lights.changeLight(1);
+            } else {
+                Lights.changeLight(3);
+            }
+
             switch (car.from) {
                 case UP:
                     if (car.p.getY() <= App.heightScene / 2 + 55 && !Lights.lights.get(0).state && !car.isPassed) {
