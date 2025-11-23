@@ -27,7 +27,7 @@ public class Cars implements Drawable {
     }
 
     public void appendCar(Cars car, Pane pane) {
-        if (!isSafePosition(car.p, car.from, car.id)) {
+        if (!isSafePosition(car.p, car.from, car.id, this.isPassed)) {
             return;
         }
         this.rec = new Rectangle(50, 50, this.color);
@@ -36,20 +36,20 @@ public class Cars implements Drawable {
         cars.add(this);
     }
 
-    public static boolean isSafePosition(Points point, Directions direction, int id) {
+    public static boolean isSafePosition(Points point, Directions direction, int id, boolean passed) {
         for (Cars car : cars) {
-
             if (direction == Directions.UP && car.from == Directions.UP && point.getY() < car.p.getY() + 70
-                    && car.id > id && !car.isPassed) {
+                    && car.id > id && !passed) {
                 return false;
             } else if (direction == Directions.DOWN && car.from == Directions.DOWN
-                    && point.getY() + 70 > car.p.getY() && car.id > id && !car.isPassed) {
+                    && point.getY() + 70 > car.p.getY() && car.id > id && !passed) {
                 return false;
             } else if (direction == Directions.RIGHT && car.from == Directions.RIGHT
-                    && point.getX() + 70 > car.p.getX() && car.id > id && !car.isPassed) {
+                    && point.getX() + 70 > car.p.getX() && car.id > id && !passed) {
                 return false;
             } else if (direction == Directions.LEFT && car.from == Directions.LEFT
-                    && point.getX() < car.p.getX() + 70 && car.id > id && !car.isPassed) {
+                    && point.getX() < car.p.getX() + 70 && car.id > id && !passed) {
+
                 return false;
             }
         }
@@ -59,15 +59,19 @@ public class Cars implements Drawable {
 
     public static void updateCar() {
         for (Cars car : cars) {
-            boolean shouldStop = checkTrafficLight(car);
-            if (shouldStop) {
+
+            if (!isSafePosition(car.p, car.from, car.id, car.isPassed)) {
                 continue;
             }
-            if (!isSafePosition(car.p, car.from, car.id)) {
-                continue;
-            }
+            
             switch (car.from) {
                 case UP:
+                    if (car.p.getY() <= App.heightScene / 2 + 55 && !Lights.lights.get(0).state && !car.isPassed) {
+                        break;
+                    }
+                    if (car.p.getY() <= App.widthScene / 2 + 55) {
+                        car.isPassed = true;
+                    }
                     double e = car.p.getY() - 1;
                     car.p.setY(e);
                     if (car.turn == Turns.RIGHT && car.p.getY() == App.heightScene / 2) {
@@ -82,6 +86,12 @@ public class Cars implements Drawable {
                     }
                     break;
                 case DOWN:
+                    if (car.p.getY() >= App.heightScene / 2 - 105 && !Lights.lights.get(2).state && !car.isPassed) {
+                        break;
+                    }
+                    if (car.p.getY() >= App.widthScene / 2 - 105) {
+                        car.isPassed = true;
+                    }
                     e = car.p.getY() + 1;
                     car.p.setY(e);
                     if (car.turn == Turns.LEFT && car.p.getY() == (App.heightScene / 2)) {
@@ -97,6 +107,14 @@ public class Cars implements Drawable {
                     }
                     break;
                 case LEFT:
+                    if (car.p.getX() <= App.widthScene / 2 + 55 && !Lights.lights.get(3).state) {
+                        break;
+                    }
+
+                    if (car.p.getX() <= App.widthScene / 2 + 55) {
+                        car.isPassed = true;
+                    }
+
                     e = car.p.getX() - 1;
                     car.p.setX(e);
                     if (car.turn == Turns.RIGHT && car.p.getX() == (App.widthScene / 2)) {
@@ -110,17 +128,23 @@ public class Cars implements Drawable {
                     }
                     break;
                 case RIGHT:
+                    if (car.p.getX() + 55 >= App.widthScene / 2 - 55 && !Lights.lights.get(1).state) {
+                        break;
+                    }
+
+                    if (car.p.getX() + 55 >= App.widthScene / 2 - 50) {
+                        car.isPassed = true;
+                    }
+
                     e = car.p.getX() + 1;
                     car.p.setX(e);
                     if (car.turn == Turns.RIGHT && car.p.getX() == (App.widthScene / 2) - 50) {
                         car.from = Directions.DOWN;
                         car.turn = Turns.STRAIGHT;
-                        car.isPassed = true;
 
                     } else if (car.turn == Turns.LEFT && car.p.getX() == (App.widthScene / 2)) {
                         car.from = Directions.UP;
                         car.turn = Turns.STRAIGHT;
-                        car.isPassed = true;
 
                     }
                     break;
@@ -129,43 +153,6 @@ public class Cars implements Drawable {
             }
             car.draw(null);
         }
-    }
-
-    private static boolean checkTrafficLight(Cars car) {
-        int centerX = App.widthScene / 2;
-        int centerY = App.heightScene / 2;
-
-        if (car.isPassed) {
-            return false;
-        }
-        switch (car.from) {
-            case UP:
-                if (car.p.getY() <= centerY + 50 && car.p.getY() + 50 >= centerY - 150) {
-                    return !Lights.lights.get(0).state;
-                }
-                break;
-
-            case DOWN:
-                if (car.p.getY() >= centerY - 100 && car.p.getY() - 100 <= centerY + 50) {
-                    return !Lights.lights.get(1).state;
-                }
-                break;
-
-            case LEFT:
-                if (car.p.getX() <= centerX + 50 && car.p.getX() >= centerX - 150) {
-                    return !Lights.lights.get(2).state;
-                }
-                break;
-                
-                case RIGHT:
-                if (car.p.getX() >= centerX - 100 && car.p.getX() - 100 <= centerX + 50) {
-                    System.out.println("ToLeft");
-                    return !Lights.lights.get(3).state;
-                }
-                break;
-        }
-
-        return false;
     }
 
     @Override
