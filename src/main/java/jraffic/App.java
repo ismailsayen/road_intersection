@@ -74,10 +74,14 @@ public class App extends Application {
         Roads roads = new Roads();
         roads.generateRoads(widthScene, heightScene);
         roads.draw(pane);
-        Lights l = new Lights(new Points((widthScene / 2) + 55, (heightScene / 2) + 55),pane);
-        l = new Lights(new Points((widthScene / 2) - 105, (heightScene / 2) + 55),pane);
-        l = new Lights(new Points((widthScene / 2) - 105, (heightScene / 2) - 105),pane);
-        l = new Lights(new Points((widthScene / 2) + 55, (heightScene / 2) - 105),pane);
+        //0
+        Lights l = new Lights(new Points((widthScene / 2) + 55, (heightScene / 2) + 55), pane);
+        //1
+        l = new Lights(new Points((widthScene / 2) - 105 + 1, (heightScene / 2) + 55), pane);
+        //2
+        l = new Lights(new Points((widthScene / 2) - 105, (heightScene / 2) - 105), pane);
+        //3
+        l = new Lights(new Points((widthScene / 2) + 55, (heightScene / 2) - 105), pane);
         System.out.println(Lights.lights);
         l.draw(pane);
         return pane;
