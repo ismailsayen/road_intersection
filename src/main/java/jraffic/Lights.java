@@ -2,26 +2,43 @@ package jraffic;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.scene.effect.Light;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Lights implements Drawable {
     public Points p;
+    public boolean state;
+    public Color color;
+    private Rectangle box;
     public static List<Lights> lights = new ArrayList<>();
 
-    public Lights(Points p) {
+    public Lights(Points p,Pane pane) {
         this.p = p;
+        this.state = false;
+        this.color = Color.RED;
+        this.box = new Rectangle(50, 50);
+        pane.getChildren().add(box);
         lights.add(this);
     }
 
     @Override
     public void draw(Pane pane) {
-         for (Lights light : lights) {
-            Rectangle rec = new Rectangle(50, 50, Color.RED);
-            rec.setTranslateX(light.p.getX());
-            rec.setTranslateY(light.p.getY());
-            pane.getChildren().add(rec);
+       this.box.setTranslateX(this.p.getX());
+        this.box.setTranslateY(this.p.getY());
+        this.box.setStroke(this.color);
+    }
+
+    public static void updateLights() {
+        for (Lights light : lights) {
+            if (light.state == true) {
+                light.color = Color.GREEN;
+            } else {
+                light.color = Color.RED;
+            }
+            light.draw(null);
         }
     }
 
