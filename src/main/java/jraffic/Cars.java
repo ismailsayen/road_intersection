@@ -13,12 +13,13 @@ public class Cars implements Drawable {
     public Rectangle rec;
     public Directions from;
     public Color color;
+    public Turns turn;
 
     public Cars(Points p, Directions d, Color color) {
         this.p = p;
         this.from = d;
         this.color = color;
-
+        this.turn = App.colorsCars.get(color);
     }
 
     public void appendCar(Cars car, Pane pane) {
@@ -52,22 +53,52 @@ public class Cars implements Drawable {
 
     public static void updateCar() {
         for (Cars car : cars) {
+
             switch (car.from) {
                 case UP:
                     double e = car.p.getY() - 1;
                     car.p.setY(e);
+                    if (car.turn == Turns.RIGHT && car.p.getY() == App.heightScene / 2) {
+                        car.from = Directions.RIGHT;
+                        car.turn = Turns.STRAIGHT;
+                    } else if (car.turn == Turns.LEFT && car.p.getY() == (App.heightScene / 2) - 50) {
+                        car.from = Directions.LEFT;
+                        car.turn = Turns.STRAIGHT;
+
+                    }
                     break;
                 case DOWN:
                     e = car.p.getY() + 1;
                     car.p.setY(e);
+                    if (car.turn == Turns.LEFT && car.p.getY() == (App.heightScene / 2)) {
+                        car.from = Directions.RIGHT;
+                        car.turn = Turns.STRAIGHT;
+                    } else if (car.turn == Turns.RIGHT && car.p.getY() == (App.heightScene / 2) - 50) {
+                        car.from = Directions.LEFT;
+                        car.turn = Turns.STRAIGHT;
+                    }
                     break;
                 case LEFT:
                     e = car.p.getX() - 1;
                     car.p.setX(e);
+                    if (car.turn == Turns.RIGHT && car.p.getX() == (App.widthScene / 2)) {
+                        car.from = Directions.UP;
+                        car.turn = Turns.STRAIGHT;
+                    } else if (car.turn == Turns.LEFT && car.p.getX() == (App.widthScene / 2) - 50) {
+                        car.from = Directions.DOWN;
+                        car.turn = Turns.STRAIGHT;
+                    }
                     break;
                 case RIGHT:
                     e = car.p.getX() + 1;
                     car.p.setX(e);
+                    if (car.turn == Turns.RIGHT && car.p.getX() == (App.widthScene / 2) - 50) {
+                        car.from = Directions.DOWN;
+                        car.turn = Turns.STRAIGHT;
+                    } else if (car.turn == Turns.LEFT && car.p.getX() == (App.widthScene / 2)) {
+                        car.from = Directions.UP;
+                        car.turn = Turns.STRAIGHT;
+                    }
                     break;
                 default:
                     break;
