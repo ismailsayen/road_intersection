@@ -53,7 +53,10 @@ public class Cars implements Drawable {
 
     public static void updateCar() {
         for (Cars car : cars) {
-
+            boolean shouldStop = checkTrafficLight(car);
+            if (shouldStop) {
+                continue;
+            }
             switch (car.from) {
                 case UP:
                     double e = car.p.getY() - 1;
@@ -105,6 +108,40 @@ public class Cars implements Drawable {
             }
             car.draw(null);
         }
+    }
+
+    private static boolean checkTrafficLight(Cars car) {
+        int centerX = App.widthScene / 2;
+        int centerY = App.heightScene / 2;
+
+        switch (car.from) {
+            case UP:
+                if (car.p.getY() <= centerY + 50 && car.p.getY() + 50 >= centerY - 150) {
+                    System.out.println("UP car at light");
+                    return !Lights.lights.get(0).state;
+                }
+                break;
+
+            case DOWN:
+                if (car.p.getY() >= centerY - 100 && car.p.getY() - 100 <= centerY + 50) {
+                    return !Lights.lights.get(1).state;
+                }
+                break;
+
+            case LEFT:
+                if (car.p.getX() <= centerX + 50 && car.p.getX() >= centerX - 150) {
+                    return !Lights.lights.get(2).state;
+                }
+                break;
+
+            case RIGHT:
+                if (car.p.getX() >= centerX - 100 && car.p.getX() - 100 <= centerX + 50) {
+                    return !Lights.lights.get(3).state;
+                }
+                break;
+        }
+
+        return false;
     }
 
     @Override
