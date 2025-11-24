@@ -14,6 +14,8 @@ import java.util.Map;
 public class TrafficIntersection extends Canvas {
     private static final int WIDTH = 900;
     private static final int HEIGHT = 700;
+    private static final double TARGET_FPS = 60.0;
+    private static final long FRAME_TIME = (long)(1_000_000_000.0 / TARGET_FPS);
     
     private List<Car> cars;
     private List<Light> lights;
@@ -21,6 +23,7 @@ public class TrafficIntersection extends Canvas {
     private long startTime;
     private long lastLightChange;
     private GraphicsContext gc;
+    private long lastFrameTime;
     
     public TrafficIntersection() {
         super(WIDTH, HEIGHT);
@@ -46,6 +49,7 @@ public class TrafficIntersection extends Canvas {
         
         startTime = System.currentTimeMillis();
         lastLightChange = 0;
+        lastFrameTime = System.nanoTime();
         
         setupKeyHandlers();
         startAnimation();
@@ -103,7 +107,11 @@ public class TrafficIntersection extends Canvas {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                render();
+                // Frame rate control
+                if (now - lastFrameTime >= FRAME_TIME) {
+                    render();
+                    lastFrameTime = now;
+                }
             }
         };
         timer.start();

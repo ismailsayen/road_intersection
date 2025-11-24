@@ -2,10 +2,10 @@ jraffic/TrafficIntersection$2.class
 jraffic/Car.class
 jraffic/App.class
 module-info.class
-jraffic/Direction.class
 jraffic/Roads.class
+jraffic/Direction.class
 jraffic/Route.class
-jraffic/TrafficIntersection$1.class
 jraffic/Car$1.class
-jraffic/TrafficIntersection.class
+jraffic/TrafficIntersection$1.class
 jraffic/Light.class
+jraffic/TrafficIntersection.class
